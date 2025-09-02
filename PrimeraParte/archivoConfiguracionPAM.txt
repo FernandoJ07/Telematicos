@@ -1,0 +1,2 @@
+auth    required     pam_access.so accessfile=/etc/apache2/usuarios_denegados.conf
+auth    required     pam_unix.so
