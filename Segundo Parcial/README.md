@@ -88,9 +88,15 @@ El firewall está configurado para redirigir el tráfico entrante hacia los serv
 
 ## Flujo de Tráfico
 
-1. **Consultas DNS**: Cliente → Firewall → Esclavo (192.168.50.11)
+1. **Consultas DNS**: Cliente → Firewall → Esclavo → Maestro (si es necesario)
 2. **Conexiones FTP**: Cliente → Firewall → Maestro (192.168.50.10)
 3. **Tráfico HTTP/HTTPS**: Cliente → Firewall → Maestro (192.168.50.10)
+
+### Explicación del Flujo DNS
+- **Firewall** recibe la consulta del cliente y la redirige al **Esclavo (192.168.50.11)**
+- **Esclavo** intenta resolver la consulta desde su cache/zona local
+- Si el **Esclavo** no puede resolver, realiza consulta recursiva al **Maestro (192.168.50.10)**
+- La respuesta regresa por el mismo camino: Maestro → Esclavo → Firewall → Cliente
 
 ## Configuraciones Implementadas
 

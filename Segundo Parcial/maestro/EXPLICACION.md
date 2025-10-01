@@ -22,8 +22,8 @@ listen-on { 192.168.50.10; };
 ```bash
 allow-query { 192.168.50.11; 192.168.50.12; };
 ```
-- **192.168.50.11**: Servidor esclavo (puede consultar para sincronización)
-- **192.168.50.12**: Firewall (puede consultar para redirección)
+- **192.168.50.11**: Servidor esclavo (para consultas recursivas cuando no puede resolver)
+- **192.168.50.12**: Firewall (para consultas directas si es necesario)
 
 #### Transferencias de Zona
 ```bash
@@ -120,8 +120,10 @@ pasv_address=192.168.50.12
 - Puede realizar consultas DNS al maestro si es necesario
 
 ### Con el Esclavo (192.168.50.11)
-- Proporciona transferencias de zona DNS
-- El esclavo actúa como servidor DNS secundario
+- Proporciona **transferencias de zona DNS** automáticas al esclavo
+- **Responde consultas recursivas** del esclavo cuando este no puede resolver
+- Mantiene las zonas autoritativas originales
+- **Flujo de consultas**: Esclavo consulta al Maestro cuando es necesario
 
 ## Consideraciones de Rendimiento
 

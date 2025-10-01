@@ -7,15 +7,16 @@ options {
     # Deshabilitar IPv6
     listen-on-v6 { none; };
     
-    # Solo permite consultas desde el firewall
-    # El esclavo actúa como servidor DNS público para la red
-    allow-query { 192.168.50.12; };
+    # Permite consultas desde el firewall (consultas de clientes)
+    # Y desde localhost para consultas internas
+    allow-query { 192.168.50.12; 127.0.0.1; };
     
-    # Como es servidor esclavo, NO permite transferencias
+    # Como es servidor esclavo, NO permite transferencias a otros
     # Solo recibe transferencias del maestro
     allow-transfer { none; };
     
     # Habilitar recursividad para resolver nombres externos
+    # IMPORTANTE: Permite que el esclavo consulte al maestro y otros servidores
     recursion yes;
     
     # Validación DNSSEC automática

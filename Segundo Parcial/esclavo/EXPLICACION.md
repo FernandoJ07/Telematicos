@@ -2,11 +2,23 @@
 
 ## Rol del Servidor Esclavo
 
-El servidor esclavo (192.168.50.11) funciona como **servidor DNS secundario** en la arquitectura. Sus principales características son:
+El servidor esclavo (192.168.50.11) funciona como **servidor DNS primario de consultas** en la arquitectura. Sus principales características son:
 
-1. **Servidor DNS Esclavo**: Recibe copias de las zonas DNS del maestro
-2. **Punto de consulta principal**: Recibe todas las consultas DNS redirigidas desde el firewall
-3. **Redundancia**: Proporciona continuidad del servicio DNS si el maestro falla
+1. **Punto de entrada DNS**: Recibe TODAS las consultas DNS redirigidas desde el firewall
+2. **Servidor DNS Esclavo**: Mantiene copias de las zonas DNS del maestro
+3. **Resolución recursiva**: Puede consultar al maestro y otros servidores para resolver nombres
+4. **Redundancia**: Proporciona continuidad del servicio DNS
+
+## Flujo de Resolución DNS
+
+### Proceso Completo
+1. **Cliente** envía consulta DNS
+2. **Firewall** redirige la consulta al **Esclavo (192.168.50.11)**
+3. **Esclavo** verifica si puede resolver desde su cache/zona local
+4. Si no puede resolver, **Esclavo** realiza consulta recursiva al **Maestro (192.168.50.10)**
+5. **Maestro** responde al **Esclavo**
+6. **Esclavo** responde al **Firewall**
+7. **Firewall** responde al **Cliente**
 
 ## Configuración DNS (BIND9)
 
@@ -21,10 +33,18 @@ listen-on { 192.168.50.11; };
 
 #### Control de Consultas
 ```bash
-allow-query { 192.168.50.12; };
+allow-query { 192.168.50.12; 127.0.0.1; };
 ```
-- **Solo el firewall** puede realizar consultas
-- Diseño centralizado: todas las consultas pasan por el firewall primero
+- **192.168.50.12 (Firewall)**: Recibe consultas redirigidas de clientes
+- **127.0.0.1 (Localhost)**: Para consultas internas del sistema
+
+#### Recursividad Habilitada
+```bash
+recursion yes;
+```
+- **CRÍTICO**: Permite al esclavo realizar consultas recursivas
+- Cuando no puede resolver una consulta, consulta al maestro
+- Implementa el flujo: Firewall → Esclavo → Maestro
 
 #### Política de Transferencias
 ```bash
@@ -108,9 +128,10 @@ net.ipv4.icmp_ignore_bogus_error_responses = 1
 - Mantiene la arquitectura centralizada
 
 ### Con el Maestro (192.168.50.10)
-- Recibe **transferencias de zona** automáticas
-- Se sincroniza cuando hay cambios en el maestro
+- Recibe **transferencias de zona** automáticas del maestro
+- **Realiza consultas recursivas** al maestro cuando no puede resolver localmente
 - Mantiene copias actualizadas de todas las zonas
+- **Flujo bidireccional**: Recibe zonas Y consulta para resolución
 
 ## Proceso de Sincronización
 
