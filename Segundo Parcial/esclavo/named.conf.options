@@ -1,0 +1,26 @@
+options {
+    directory "/var/cache/bind";
+    
+    # Solo escucha en la IP del servidor esclavo
+    listen-on { 192.168.50.11; };
+    
+    # Deshabilitar IPv6
+    listen-on-v6 { none; };
+    
+    # Solo permite consultas desde el firewall
+    # El esclavo actúa como servidor DNS público para la red
+    allow-query { 192.168.50.12; };
+    
+    # Como es servidor esclavo, NO permite transferencias
+    # Solo recibe transferencias del maestro
+    allow-transfer { none; };
+    
+    # Habilitar recursividad para resolver nombres externos
+    recursion yes;
+    
+    # Validación DNSSEC automática
+    dnssec-validation auto;
+    
+    # Cumplimiento RFC
+    auth-nxdomain no;
+};
