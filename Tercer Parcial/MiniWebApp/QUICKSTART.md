@@ -64,7 +64,7 @@ cd "Telematicos/Tercer Parcial/MiniWebApp"
 
 # 3. Ejecutar script de despliegue
 chmod +x ./scripts/deploy-aws.sh
-./scripts/deploy-aws.sh
+sudo ./scripts/deploy-aws.sh
 ```
 
 **Acceder a los servicios:**
