@@ -42,18 +42,28 @@ Desde tu navegador en Windows:
 - Instancia EC2 Ubuntu 22.04
 - Puertos abiertos: HTTP (80), HTTPS (443), Custom TCP (3000), Custom TCP (9090)
 
-### Despliegue
+### Despliegue Rápido (Recomendado)
 
 ```bash
 # Conectarse a la instancia EC2
 ssh -i tu-key.pem ubuntu@tu-ip-publica
 
-# Ejecutar script de despliegue
+# Ejecutar script de despliegue automático
 bash <(curl -s https://raw.githubusercontent.com/FernandoJ07/Telematicos/main/Tercer%20Parcial/MiniWebApp/scripts/deploy-aws.sh)
+```
 
-# O clonar y ejecutar manualmente
+### O Despliegue Manual
+
+```bash
+# 1. Conectarse a la instancia EC2
+ssh -i tu-key.pem ubuntu@tu-ip-publica
+
+# 2. Clonar el repositorio
 git clone https://github.com/FernandoJ07/Telematicos.git
 cd "Telematicos/Tercer Parcial/MiniWebApp"
+
+# 3. Ejecutar script de despliegue
+chmod +x ./scripts/deploy-aws.sh
 ./scripts/deploy-aws.sh
 ```
 
@@ -79,9 +89,13 @@ vagrant destroy        # Eliminar VM
 ### Docker (dentro de la VM o EC2)
 
 ```bash
-cd /vagrant            # En Vagrant
-# cd "Telematicos/Tercer Parcial/MiniWebApp"  # En EC2
+# En Vagrant
+cd /vagrant
 
+# En EC2 (si clonaste el repositorio)
+cd ~/Telematicos/Tercer\ Parcial/MiniWebApp
+
+# Comandos Docker Compose
 docker compose ps              # Ver estado de servicios
 docker compose logs webapp     # Ver logs de webapp
 docker compose restart webapp  # Reiniciar webapp
@@ -132,33 +146,3 @@ vagrant ssh -c "cd /vagrant && docker compose down && docker compose up -d --bui
 ---
 
 Ver [README.md](README.md) para documentación completa.
-
-## ☁️ Punto 2: AWS EC2
-
-```bash
-# 1. Conectarse a EC2
-ssh -i "tu-clave.pem" ubuntu@<IP-EC2>
-
-# 2. Clonar y provisionar
-git clone https://github.com/FernandoJ07/Telematicos.git
-cd Telematicos/Tercer\ Parcial/MiniWebApp
-./scripts/provision-aws-ec2.sh
-
-# 3. Reconectar
-exit
-ssh -i "tu-clave.pem" ubuntu@<IP-EC2>
-
-# 4. Desplegar
-cd Telematicos/Tercer\ Parcial/MiniWebApp
-./scripts/deploy-aws.sh
-```
-
-### Acceder desde navegador
-
-- WebApp: https://<IP-EC2>
-- Grafana: http://<IP-EC2>:3000
-- Prometheus: http://<IP-EC2>:9090
-
----
-
-Ver [README.md](README.md) para más información.
