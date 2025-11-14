@@ -12,6 +12,7 @@ echo "=========================================="
 REPO_URL="https://github.com/FernandoJ07/Telematicos.git"
 APP_DIR="/home/ubuntu/webapp"
 BRANCH="main"
+DOCKER_INSTALLED=false
 
 # 1. Instalar Docker y Docker Compose si no están instalados
 if ! command -v docker &> /dev/null; then
@@ -32,7 +33,8 @@ if ! command -v docker &> /dev/null; then
     
     # Agregar usuario al grupo docker
     sudo usermod -aG docker $USER
-    echo "Docker instalado. Nota: Debe cerrar sesión y volver a entrar para usar docker sin sudo"
+    DOCKER_INSTALLED=true
+    echo "Docker instalado exitosamente."
 fi
 
 # 2. Clonar o actualizar repositorio
@@ -47,15 +49,25 @@ fi
 
 cd "$APP_DIR/Tercer Parcial/MiniWebApp"
 
+# Definir comando docker (usar sudo si acabamos de instalar Docker)
+if [ "$DOCKER_INSTALLED" = true ]; then
+    echo "Usando sudo para Docker (recién instalado)..."
+    DOCKER_CMD="sudo docker"
+    COMPOSE_CMD="sudo docker compose"
+else
+    DOCKER_CMD="docker"
+    COMPOSE_CMD="docker compose"
+fi
+
 # 3. Ejecutar init.sql para crear tablas (si es primera vez)
 echo "Inicializando base de datos..."
-docker compose up -d db
+$COMPOSE_CMD up -d db
 sleep 10
-docker compose exec -T db mysql -uroot -proot < init.sql 2>/dev/null || echo "Base de datos ya inicializada"
+$COMPOSE_CMD exec -T db mysql -uroot -proot myflaskapp < init.sql 2>/dev/null || echo "Base de datos ya inicializada"
 
 # 4. Levantar todos los servicios
 echo "Levantando servicios..."
-docker compose up -d
+$COMPOSE_CMD up -d --build
 
 # 5. Verificar estado
 echo ""
@@ -64,7 +76,7 @@ sleep 20
 
 echo ""
 echo "Estado de los servicios:"
-docker compose ps
+$COMPOSE_CMD ps
 
 echo ""
 echo "=========================================="
@@ -81,7 +93,7 @@ echo ""
 # Mostrar logs
 echo ""
 echo "Últimos logs de los contenedores:"
-docker-compose logs --tail=20
+$COMPOSE_CMD logs --tail=20
 
 # Obtener IP pública
 PUBLIC_IP=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4 || echo "No disponible")
@@ -102,5 +114,12 @@ echo "  Usuario: admin"
 echo "  Contraseña: admin123"
 echo ""
 echo "Para ver los logs en tiempo real:"
-echo "  docker-compose logs -f"
+if [ "$DOCKER_INSTALLED" = true ]; then
+    echo "  sudo docker compose logs -f"
+    echo ""
+    echo "NOTA: Docker se instaló en esta sesión."
+    echo "      Cierre sesión y vuelva a conectarse para usar docker sin sudo."
+else
+    echo "  docker compose logs -f"
+fi
 echo ""
