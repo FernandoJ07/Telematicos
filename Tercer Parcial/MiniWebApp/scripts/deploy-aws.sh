@@ -59,6 +59,17 @@ else
     COMPOSE_CMD="docker compose"
 fi
 
+# Usar docker-compose.prod.yml si existe (imagen pre-built), sino usar docker-compose.yml (build local)
+if [ -f "docker-compose.prod.yml" ]; then
+    echo "Usando docker-compose.prod.yml (imagen pre-built de Docker Hub - rápido)..."
+    COMPOSE_FILE="docker-compose.prod.yml"
+else
+    echo "Usando docker-compose.yml (build local - puede tardar 10-15 min)..."
+    COMPOSE_FILE="docker-compose.yml"
+fi
+
+COMPOSE_CMD="$COMPOSE_CMD -f $COMPOSE_FILE"
+
 # 3. Ejecutar init.sql para crear tablas (si es primera vez)
 echo "Inicializando base de datos..."
 $COMPOSE_CMD up -d db

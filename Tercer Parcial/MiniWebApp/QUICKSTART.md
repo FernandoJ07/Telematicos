@@ -107,6 +107,45 @@ docker compose up -d           # Levantar todos los servicios
 
 ## 🐛 Solución de Problemas
 
+### Build muy lento en AWS EC2 (más de 15 minutos)
+
+Si el build de Docker tarda demasiado en EC2 (instancias pequeñas), usa la imagen pre-built de Docker Hub:
+
+**El proyecto ya tiene dos configuraciones:**
+- `docker-compose.yml` - Build local (Vagrant/desarrollo)
+- `docker-compose.prod.yml` - Imagen de Docker Hub (AWS rápido)
+
+**Paso 1: Buildear y subir imagen (solo una vez)**
+
+```bash
+# En tu PC local (Windows con PowerShell)
+cd "c:\Users\User\Desktop\Repositories\Telematicos\Tercer Parcial\MiniWebApp"
+
+# Login en Docker Hub
+docker login
+
+# Buildear imagen (5-10 min en PC local)
+docker build -t alejandrobi/telematicos-webapp:latest .
+
+# Subir a Docker Hub
+docker push alejandrobi/telematicos-webapp:latest
+```
+
+**Paso 2: Deploy en EC2 con imagen**
+
+```bash
+# En EC2
+cd ~/Telematicos/Tercer\ Parcial/MiniWebApp
+sudo docker compose -f docker-compose.prod.yml pull
+sudo docker compose -f docker-compose.prod.yml up -d
+```
+
+¡Listo! Deploy en segundos sin compilar nada.
+
+**Nota:** El script `deploy-aws.sh` automáticamente usa `docker-compose.prod.yml` si existe
+
+---
+
 ### WebApp no carga
 
 ```bash
