@@ -1,0 +1,27 @@
+options {
+    directory "/var/cache/bind";
+    
+    # Solo escucha en la IP del servidor maestro
+    listen-on { 192.168.50.10; };
+    
+    # Deshabilitar IPv6
+    listen-on-v6 { none; };
+    
+    # Definir quién puede realizar consultas DNS
+    # Permite consultas desde el servidor esclavo (para recursividad)
+    # y desde el firewall (si es necesario)
+    allow-query { 192.168.50.11; 192.168.50.12; };
+    
+    # Configurar transferencias de zona
+    # Permite transferencias hacia el servidor esclavo y firewall
+    allow-transfer { 192.168.50.11; 192.168.50.12; };
+    
+    # Habilitar recursividad para resolución de nombres externos
+    recursion yes;
+    
+    # Validación DNSSEC automática para mayor seguridad
+    dnssec-validation auto;
+    
+    # Cumplimiento RFC para respuestas de dominios no autoritativos
+    auth-nxdomain no;
+};

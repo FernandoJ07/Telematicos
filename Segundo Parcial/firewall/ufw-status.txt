@@ -1,0 +1,33 @@
+# Estado actual de UFW en el firewall
+# Salida del comando: sudo ufw status verbose
+
+Status: active
+Logging: on (low)
+Default: deny (incoming), allow (outgoing), allow (routed)
+New profiles: skip
+
+To                         Action      From
+--                         ------      ----
+22/tcp                     ALLOW IN    Anywhere           # SSH
+21/tcp                     ALLOW IN    Anywhere           # FTP control
+40000:40010/tcp            ALLOW IN    Anywhere           # FTP pasivo
+53/tcp                     ALLOW IN    Anywhere           # DNS TCP
+53/udp                     ALLOW IN    Anywhere           # DNS UDP
+80/tcp                     ALLOW IN    Anywhere           # HTTP
+443                        ALLOW IN    Anywhere           # HTTPS
+22/tcp (v6)                ALLOW IN    Anywhere (v6)      # SSH IPv6
+21/tcp (v6)                ALLOW IN    Anywhere (v6)      # FTP control IPv6
+40000:40010/tcp (v6)       ALLOW IN    Anywhere (v6)      # FTP pasivo IPv6
+53/tcp (v6)                ALLOW IN    Anywhere (v6)      # DNS TCP IPv6
+53/udp (v6)                ALLOW IN    Anywhere (v6)      # DNS UDP IPv6
+80/tcp (v6)                ALLOW IN    Anywhere (v6)      # HTTP IPv6
+443 (v6)                   ALLOW IN    Anywhere (v6)      # HTTPS IPv6
+
+# Comandos utilizados para configurar las reglas:
+# sudo ufw allow 22/tcp      # SSH
+# sudo ufw allow 21/tcp      # FTP control
+# sudo ufw allow 40000:40010/tcp  # Rango FTP pasivo
+# sudo ufw allow 53/tcp      # DNS TCP
+# sudo ufw allow 53/udp      # DNS UDP
+# sudo ufw allow 80/tcp      # HTTP
+# sudo ufw allow 443         # HTTPS

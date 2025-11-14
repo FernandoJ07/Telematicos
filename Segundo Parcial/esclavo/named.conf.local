@@ -1,0 +1,18 @@
+// Configuración de zonas como servidor ESCLAVO
+// El servidor esclavo recibe copias de las zonas del maestro
+
+// Zona directa como ESCLAVA
+zone "empresa.local" {
+    type slave;                          # Este es servidor secundario
+    file "/var/cache/bind/db.empresa.local";  # Se guarda en cache
+    masters { 192.168.50.10; };          # IP del servidor maestro
+    allow-query { 192.168.50.12; 127.0.0.1; }; # Solo firewall y localhost
+};
+
+// Zona inversa como ESCLAVA
+zone "50.168.192.in-addr.arpa" {
+    type slave;                          # Servidor secundario para zona inversa
+    file "/var/cache/bind/db.192";       # Archivo cache para zona inversa
+    masters { 192.168.50.10; };          # IP del servidor maestro
+    allow-query { 192.168.50.12; 127.0.0.1; }; # Solo firewall y localhost
+};

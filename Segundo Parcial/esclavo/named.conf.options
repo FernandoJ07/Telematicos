@@ -1,0 +1,27 @@
+options {
+    directory "/var/cache/bind";
+    
+    # Solo escucha en la IP del servidor esclavo
+    listen-on { 192.168.50.11; };
+    
+    # Deshabilitar IPv6
+    listen-on-v6 { none; };
+    
+    # Permite consultas desde el firewall (consultas de clientes)
+    # Y desde localhost para consultas internas
+    allow-query { 192.168.50.12; 127.0.0.1; };
+    
+    # Como es servidor esclavo, NO permite transferencias a otros
+    # Solo recibe transferencias del maestro
+    allow-transfer { none; };
+    
+    # Habilitar recursividad para resolver nombres externos
+    # IMPORTANTE: Permite que el esclavo consulte al maestro y otros servidores
+    recursion yes;
+    
+    # Validación DNSSEC automática
+    dnssec-validation auto;
+    
+    # Cumplimiento RFC
+    auth-nxdomain no;
+};
