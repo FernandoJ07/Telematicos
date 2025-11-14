@@ -1,8 +1,9 @@
+-- Crear base de datos si no existe
+CREATE DATABASE IF NOT EXISTS myflaskapp;
+USE myflaskapp;
 
-CREATE DATABASE myflaskapp;
-use myflaskapp;
-
-CREATE TABLE users (
+-- Crear tabla users si no existe
+CREATE TABLE IF NOT EXISTS users (
     id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name varchar(255),
     email varchar(255),
@@ -10,6 +11,8 @@ CREATE TABLE users (
     password varchar(255)
 );
 
-
-INSERT INTO users VALUES(null, "juan", "juan@gmail.com", "juan", "123"),
-    (null, "maria", "maria@gmail.com", "maria", "456");
+-- Insertar datos iniciales solo si la tabla está vacía
+INSERT IGNORE INTO users (id, name, email, username, password) 
+VALUES 
+    (1, "juan", "juan@gmail.com", "juan", "123"),
+    (2, "maria", "maria@gmail.com", "maria", "456");

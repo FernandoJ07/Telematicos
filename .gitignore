@@ -1,0 +1,29 @@
+# Vagrant
+.vagrant/
+
+# Certificados SSL generados
+ssl/*.key
+ssl/*.crt
+ssl/*.pem
+
+# Logs
+*.log
+logs/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+venv/
+.venv/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
