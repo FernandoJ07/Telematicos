@@ -1,0 +1,34 @@
+# Reglas de alertas para Prometheus
+groups:
+  - name: system_alerts
+    interval: 30s
+    rules:
+      # Alerta: CPU alta (> 80%)
+      - alert: HighCPUUsage
+        expr: 100 - (avg by (instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Alto uso de CPU detectado"
+          description: "La instancia {{ $labels.instance }} tiene un uso de CPU mayor al 80% (valor actual: {{ $value }}%)"
+
+      # Alerta: Memoria alta (> 85%)
+      - alert: HighMemoryUsage
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 85
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Alto uso de memoria detectado"
+          description: "La instancia {{ $labels.instance }} tiene un uso de memoria mayor al 85% (valor actual: {{ $value }}%)"
+
+      # Alerta: Disco lleno (> 90%)
+      - alert: DiskSpaceWarning
+        expr: (1 - (node_filesystem_avail_bytes{fstype!="tmpfs",mountpoint="/"} / node_filesystem_size_bytes{fstype!="tmpfs",mountpoint="/"})) * 100 > 90
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Espacio en disco bajo"
+          description: "El disco en {{ $labels.instance }} está al {{ $value }}% de capacidad"
