@@ -72,6 +72,21 @@ sudo ./scripts/deploy-aws.sh
 - Grafana: http://TU-IP-PUBLICA:3000 (admin/admin123)
 - Prometheus: http://TU-IP-PUBLICA:9090
 
+### Reiniciar Instancia EC2
+
+Si apagas y vuelves a encender la instancia, los contenedores no se inician automáticamente. 
+
+**⚠️ Importante:** La IP pública cambiará cada vez que detengas/inicies la instancia.
+
+```bash
+# Conéctate con la nueva IP
+ssh -i tu-key.pem ubuntu@NUEVA-IP-PUBLICA
+
+# Levanta los servicios
+cd ~/Telematicos/Tercer\ Parcial/MiniWebApp
+sudo docker compose -f docker-compose.prod.yml up -d
+```
+
 ---
 
 ## 🔧 Comandos Útiles
