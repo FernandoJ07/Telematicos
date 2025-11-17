@@ -37,8 +37,8 @@ services:
     restart: always
     environment:
       MYSQL_HOST: db
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: apppass
       MYSQL_DB: myflaskapp
       FLASK_ENV: production
     ports:

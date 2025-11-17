@@ -46,7 +46,7 @@ RUN a2dissite 000-default.conf \
     && a2ensite webapp-ssl.conf
 
 # Crear script de inicio
-COPY docker-entrypoint.sh /usr/local/bin/
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 # Exponer puertos
