@@ -1,6 +1,6 @@
 services:
   webapp:
-    image: alejandrobi/telematicos-webapp:latest
+    image: fernandouao/telematicos-webapp:latest 
     container_name: flask_app
     restart: always
     environment:
