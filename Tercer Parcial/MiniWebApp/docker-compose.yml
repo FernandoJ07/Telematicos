@@ -28,17 +28,17 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    
+
     # Opción 2: Usar imagen pre-built de Docker Hub (rápido en EC2)
     # Descomentar la siguiente línea y comentar 'build' si ya subiste la imagen:
     # image: TU-USUARIO-DOCKERHUB/telematicos-webapp:latest
-    
+
     container_name: flask_app
     restart: always
     environment:
       MYSQL_HOST: db
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: apppass
       MYSQL_DB: myflaskapp
       FLASK_ENV: production
     ports:

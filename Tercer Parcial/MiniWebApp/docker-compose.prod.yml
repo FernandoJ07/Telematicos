@@ -5,9 +5,10 @@ services:
     restart: always
     environment:
       MYSQL_HOST: db
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: apppass
       MYSQL_DATABASE: myflaskapp
+      MYSQL_ROOT_PASSWORD: root
     ports:
       - "80:80"
       - "443:443"

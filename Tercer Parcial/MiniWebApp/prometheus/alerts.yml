@@ -15,8 +15,8 @@ groups:
 
       # Alerta: Memoria alta (> 85%)
       - alert: HighMemoryUsage
-        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 85
-        for: 2m
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 10
+        for: 10s
         labels:
           severity: warning
         annotations:

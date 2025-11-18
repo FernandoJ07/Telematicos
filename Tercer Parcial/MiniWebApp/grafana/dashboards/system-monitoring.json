@@ -180,7 +180,7 @@
       "pluginVersion": "8.0.0",
       "targets": [
         {
-          "expr": "(1 - (node_filesystem_avail_bytes{mountpoint=\"/\",fstype!=\"tmpfs\"} / node_filesystem_size_bytes{mountpoint=\"/\",fstype!=\"tmpfs\"})) * 100",
+          "expr": "(1 - (sum(node_filesystem_avail_bytes{fstype!~\"tmpfs|overlay|squashfs\"}) / sum(node_filesystem_size_bytes{fstype!~\"tmpfs|overlay|squashfs\"}))) * 100",
           "refId": "A",
           "legendFormat": ""
         }
