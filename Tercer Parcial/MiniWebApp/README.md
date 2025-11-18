@@ -394,5 +394,4 @@ La observabilidad es fundamental en DevOps:
 ---
 
 **Proyecto**: Despliegue Seguro, Monitoreo y Visualización en la Nube  
-**Curso**: Redes Telemáticas - Tercer Parcial  
-**Autor**: Fernando Jiménez
+**Curso**: Redes Telemáticas - Tercer Parcial
