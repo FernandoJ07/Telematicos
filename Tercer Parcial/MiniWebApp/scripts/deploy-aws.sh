@@ -11,7 +11,7 @@ echo "=========================================="
 # Variables
 REPO_URL="https://github.com/FernandoJ07/Telematicos.git"
 APP_DIR="/home/ubuntu/webapp"
-BRANCH="main"
+BRANCH="Parcial3-Fixed"
 DOCKER_INSTALLED=false
 
 # 1. Instalar Docker y Docker Compose si no están instalados
