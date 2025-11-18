@@ -70,6 +70,19 @@ services:
     networks:
       - app_network
 
+  apache-exporter:
+    image: lusotycoon/apache-exporter:latest
+    container_name: apache_exporter
+    restart: always
+    command:
+      - '--scrape_uri=http://webapp/server-status?auto'
+    ports:
+      - "9117:9117"
+    depends_on:
+      - webapp
+    networks:
+      - app_network
+
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
